@@ -1,0 +1,21 @@
+# package directories
+node_modules
+jspm_packages
+
+# Serverless directories
+.serverless
+
+# MacOs
+.DS_Store
+
+# IntelliJ
+.idea/
+*.iml
+
+dist
+.webpack
+/.settings/
+/.project
+
+asset-manifest.json
+/build/

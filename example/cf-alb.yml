@@ -1,0 +1,53 @@
+Description: >
+  Example Application Load Balancer
+
+Parameters:
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+  Subnets:
+    Type: List<AWS::EC2::Subnet::Id>
+
+Mappings:
+  EnvironmentMap:
+    dev:
+      vpc: vpc-bc5badd7
+      albSubnets: [ subnet-268fca7d, subnet-d64d75b1, subnet-67fceb0c ]
+      lambdaName: lc-sls-alb-poc-dev-Hello
+      HostedZoneName: dev-carboatservices.fr
+      CertificateArn: arn:aws:acm:eu-west-1:629307289374:certificate/02453e9f-55c7-4ce1-a502-9efa7574647b
+      ALBHostedZoneId: Z2FDTNDATAQYW2
+
+Resources:
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: 'example-alb'
+      Subnets: !Ref Subnets
+      SecurityGroups: [!Ref ALBSecurityGroup]
+
+  HTTPListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
+        - Type: fixed-response
+          FixedResponseConfig:
+            StatusCode: 404
+
+  ALBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: 'example-alb-sg'
+      GroupDescription: 'Example ALB Security Group'
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0

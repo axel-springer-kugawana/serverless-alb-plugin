@@ -1,0 +1,32 @@
+service: lambda-alb-example
+
+plugins:
+  localPath: ..
+  modules:
+  - index
+
+custom:
+  alb:
+    listenerArn: <your alb http listener arn>
+
+package:
+  excludeDevDependencies: false
+  individually: true
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: eu-west-1
+  stage: dev
+
+functions:
+  Hello:
+    handler: hello.handler
+    package:
+      include:
+        - ./hello.js
+    events:
+      - alb:
+          priority: 1
+          conditions:
+            path: /hello

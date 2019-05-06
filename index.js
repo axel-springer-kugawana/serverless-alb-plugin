@@ -7,7 +7,6 @@ class ServerlessPluginAlb {
     this.options = options;
     this.provider = serverless.getProvider('aws');
     this.stage = this.provider.getStage();
-    this.albListenerArn = _.get(this.serverless, 'service.custom.alb.listenerArn');
 
     Object.assign(this, extendedValidate);
 
@@ -17,6 +16,10 @@ class ServerlessPluginAlb {
     };
 
     this.getFunctionAlbEvents = this.getFunctionAlbEvents.bind(this);
+  }
+
+  getAlbListenerArn() {
+    return _.get(this.serverless, 'service.custom.alb.listenerArn');
   }
 
   getFunctionAlbEvents(functionName) {

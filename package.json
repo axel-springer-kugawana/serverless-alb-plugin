@@ -1,6 +1,6 @@
 {
   "name": "serverless-plugin-alb",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Serverless plugin for Application Load Balancers",
   "main": "index.js",
   "repository": {

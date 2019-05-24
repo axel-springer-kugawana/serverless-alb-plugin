@@ -113,14 +113,17 @@ class ServerlessPluginAlb {
     }
 
     if (host || albEvent.conditions.host) {
+      let hostHeaderValues = [];
+      if (albEvent.conditions.host) {
+        hostHeaderValues = hostHeaderValues.concat(albEvent.conditions.host);
+      }
+      if (host) {
+        hostHeaderValues = hostHeaderValues.concat(host);
+      }
+
       listenerRuleTemplate.Properties.Conditions.push({
         Field: 'host-header',
-        Values: [
-          host ||
-            (_.isArray(albEvent.conditions.host)
-              ? albEvent.conditions.host
-              : [albEvent.conditions.host])
-        ]
+        Values: hostHeaderValues
       });
     }
 

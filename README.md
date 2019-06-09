@@ -21,6 +21,10 @@ plugins:
   - serverless-plugin-alb
 ```
 
+## Usage
+
+`serverless deploy`
+
 ## Configuration
 
 You can specify a custom config file in your `serverless.yml`:
@@ -49,12 +53,6 @@ functions:
                 path: '/greetings'
 ```
 For each alb event, property `priority` and at least one of `conditions` are required.
-
-## Usage
-
-`serverless deploy`
-
-## Configuration
 
 Here are the supported conditions:
 * `path` (String)

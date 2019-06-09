@@ -62,7 +62,7 @@ class ServerlessPluginAlb {
             Properties: {
               TargetType: 'lambda',
               Targets: [{ Id: { 'Fn::GetAtt': [lambdaLogicalId, 'Arn'] } }],
-              Name: this.getTargetGroupName(functionName, this.stage)
+              Name: ServerlessPluginAlb.getTargetGroupName(functionName, this.stage)
             }
           }
         };
@@ -127,6 +127,46 @@ class ServerlessPluginAlb {
       });
     }
 
+    if (albEvent.conditions.method) {
+      listenerRuleTemplate.Properties.Conditions.push({
+        Field: 'http-request-method',
+        HttpRequestMethodConfig: {
+          Values: _.concat(albEvent.conditions.method)
+        }
+      });
+    }
+
+    if (_.isObject(albEvent.conditions.header)) {
+      listenerRuleTemplate.Properties.Conditions.push({
+        Field: 'http-header',
+        HttpHeaderConfig: {
+          HttpHeaderName: albEvent.conditions.header.name,
+          Values: _.concat(albEvent.conditions.header.values)
+        }
+      });
+    }
+
+    if (_.isObject(albEvent.conditions.query)) {
+      listenerRuleTemplate.Properties.Conditions.push({
+        Field: 'query-string',
+        QueryStringConfig: {
+          Values: Object.keys(albEvent.conditions.query).map(key => ({
+            Key: key,
+            Value: albEvent.conditions.query[key]
+          }))
+        }
+      });
+    }
+
+    if (albEvent.conditions.ip) {
+      listenerRuleTemplate.Properties.Conditions.push({
+        Field: 'source-ip',
+        SourceIpConfig: {
+          Values: _.concat(albEvent.conditions.ip)
+        }
+      });
+    }
+
     if (listenerRuleTemplate.Properties.Conditions.length === 0) {
       throw new Error(`At least one condition mut be set for function ${albEvent.functionName}`);
     }
@@ -153,7 +193,7 @@ class ServerlessPluginAlb {
     )}ListenerRule${rulePriority}`;
   }
 
-  getTargetGroupName(functionName, stage = '') {
+  static getTargetGroupName(functionName, stage = '') {
     return `${_.truncate(functionName, {
       length: 32 - (stage.length + 1),
       omission: ''

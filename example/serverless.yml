@@ -30,3 +30,26 @@ functions:
           priority: 1
           conditions:
             path: /hello
+  Foo:
+    handler: hello.handler
+    package:
+      include:
+      - ./hello.js
+    events:
+    - alb:
+        priority: 2
+        conditions:
+          path: /foo
+          method: POST
+  Bar:
+    handler: hello.handler
+    package:
+      include:
+      - ./hello.js
+    events:
+    - alb:
+        priority: 3
+        conditions:
+          path: /bar
+          query:
+            bar: true

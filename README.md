@@ -54,6 +54,18 @@ For each alb event, property `priority` and at least one of `conditions` are req
 
 `serverless deploy`
 
+## Configuration
+
+Here are the supported conditions:
+* `path` (String)
+* `host` (String or Array)
+* `method` (String or Array)
+* `query` (Object) A list of key/value 
+* `header` (Object) Must have `name` and `values` properties
+* `ip` (String or Array) Must be a CIDR block
+
+Note: there can be up to 5 conditions in total. If you specify multiple values for a field name (such as `query` or `host), it counts as multiple conditions.
+
 ## How it works
 
 For each functions with at least one ALB event, the plugin will create a target group for that function

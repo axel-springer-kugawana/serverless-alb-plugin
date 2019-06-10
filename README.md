@@ -1,5 +1,7 @@
 # Serverless Plugin for Application Load Balancer
 
+[![npm version](https://badge.fury.io/js/serverless-plugin-alb.svg)](https://badge.fury.io/js/serverless-plugin-alb)
+
 This plugin compiles ALB events to Lambda Target Groups and ALB Listener Rules (as CloudFormation resources). 
 It does not create a new ALB, it requires an existing ALB with a HTTP or HTTPS listener.
 
@@ -94,6 +96,4 @@ functions:
                 path: '/greetings'
 ```
 Then the Cloudformation stack update will fail saying that a priority is already in use: CloudFormation does not
-handle rule re-ordering. I have opened an issue in AWS support where I ask if it is going to be fixed.
-
-In the meantime, you have to use different priorites each time you add or delete functions. 
+handle rule re-ordering. You have to use different priorites each time you add or delete functions.

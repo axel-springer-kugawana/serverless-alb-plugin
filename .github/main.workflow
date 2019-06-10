@@ -9,6 +9,7 @@ action "Build" {
 }
 
 action "Lint" {
+  needs = "Build"
   uses = "Borales/actions-yarn@master"
   args = "lint"
 }

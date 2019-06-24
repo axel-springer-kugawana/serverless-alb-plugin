@@ -18,10 +18,6 @@ class ServerlessPluginAlb {
     this.getFunctionAlbEvents = this.getFunctionAlbEvents.bind(this);
   }
 
-  getAlbListenerArn() {
-    return _.get(this.serverless, 'service.custom.alb.listenerArn');
-  }
-
   getFunctionAlbEvents(functionName) {
     const functionObj = this.serverless.service.getFunction(functionName);
     if (_.isArray(functionObj.events)) {
@@ -86,7 +82,8 @@ class ServerlessPluginAlb {
 
   createListenerRule(albEvent) {
     const host = _.get(this.serverless, 'service.custom.alb.host');
-    const listenerArn = _.get(this.serverless, 'service.custom.alb.listenerArn');
+    const listenerArn =
+      albEvent.listenerArn || _.get(this.serverless, 'service.custom.alb.listenerArn');
 
     const listenerRuleTemplate = {
       Type: 'AWS::ElasticLoadBalancingV2::ListenerRule',

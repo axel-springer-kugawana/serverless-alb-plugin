@@ -3,11 +3,15 @@
 [![npm version](https://badge.fury.io/js/serverless-plugin-alb.svg)](https://badge.fury.io/js/serverless-plugin-alb)
 [![GitHub Actions](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Faxel-springer-kugawana%2Fserverless-alb-plugin%2Fbadge&style=flat-square)](https://actions-badge.atrox.dev/axel-springer-kugawana/serverless-alb-plugin/goto)
 
+**Warning: Since Serverless v1.46 was released, ALB events are supported natively so you do not need this plugin unless 
+you are using an earlier version of Serverleess.**
+
 This plugin compiles ALB events to Lambda Target Groups and ALB Listener Rules (as CloudFormation resources). 
 It does not create a new ALB, it requires an existing ALB with a HTTP or HTTPS listener.
 
 ## Requirements
 
+Tested with:
 * Node.js >= `v8.10`
 * Serverless Framework >= `v1.40`
 
